@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import './bootstrap/css/bootstrap.min.css'
 
@@ -11,7 +10,7 @@ class App extends Component {
           <h1 className="App-title">Video Data Pipeline</h1>
         </header>
         <form name="mainInputForm">
-            <div class="videoInputContainer">
+            <div className="videoInputContainer">
     				Video Data: <input name="videoFileInputBox" type="file" />
                 <br />
                 <label>
