@@ -1,42 +1,16 @@
 {
-  "name": "robotics-frontend",
-  "version": "1.0.0",
-  "description": "frontend for cs401 project",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node server.js --ignore public/ --ignore src/",
-    "dev": "webpack -wd"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ethan1406/Robotics-Frontend.git"
-  },
-  "author": "Ethan Chang",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ethan1406/Robotics-Frontend/issues"
-  },
-  "homepage": "https://github.com/ethan1406/Robotics-Frontend#readme",
+  "name": "robotics-temp",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^9.0.0",
-    "babel-loader": "^7.1.5",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "morgan": "^1.9.1",
-    "node-sass-middleware": "^0.11.0",
-    "path": "^0.12.7",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
-    "react-router-dom": "^4.3.1"
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "react-scripts": "1.1.5"
   },
-  "devDependencies": {
-    "eslint": "^5.5.0",
-    "webpack": "^4.18.0",
-    "webpack-cli": "^3.1.0"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
