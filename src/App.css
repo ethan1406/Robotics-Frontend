@@ -23,15 +23,20 @@
 }
 
 form[name="mainInputForm"] {
+    display: block;
     padding-top: 40px;
-    width: 100%;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: auto;
+    align-items: center;
 }
 
-.videoInputContainer {
-    width: 60%;
+.videoInputContainer, .videoOptionsContainer, .csvInputContainer {
+    align-items: center;
 }
 
 label {
     font-family: 'Montserrat', sans-serif;
     font-size: 10pt;
+    float: left;
 }

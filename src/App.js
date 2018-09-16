@@ -11,32 +11,36 @@ class App extends Component {
           <h1 className="App-title">Video Data Pipeline</h1>
         </header>
         <form name="mainInputForm">
-            <div class="videoInputContainer">
-    				Video Data: <input name="videoFileInputBox" type="file" />
-                <br />
-                <label>
-                    OpenFace:
-                    <input name="OpenFaceCheckBox" type="checkbox" />
-                </label>
-                <br />
-                <label>
-                    OpenPose:
-                    <input name="OpenPoseCheckBox" type="checkbox" />
-                </label>
+            <div className="videoInputContainer">
+                <label for="videoFileInputBox">Video Data: </label>
+                <input name="videoFileInputBox" type="file" />
             </div>
             <br />
-            <div>
-                <label>
-    				OpenFace CSV Data:
-    				<input name="openFaceCSVFileInputBox" type="file" />
-    			</label>
-                <label>
-                    OpenPose CSV Data:
-                    <input name="openPoseCSVFileInputBox" type="file" />
-                </label>
-                <br />
-    			<input type="submit" value="Submit" />
+            <div className="videoOptionsContainer">
+                Run:
+                <div className="openFaceCheckBoxContainer">
+                    <input name="OpenFaceCheckBox" type="checkbox" />
+                    <label for="OpenFaceCheckBox">OpenFace</label>
+                    <br />
+                </div>
+                <div className="openPoseCheckBoxContainer">
+                    <input name="OpenPoseCheckBox" type="checkbox" />
+                    <label for="OpenPoseCheckBox">OpenPose</label>
+                </div>
             </div>
+            <br />
+            <div className="csvInputContainer">
+                <div>
+                    <label>OpenFace CSV Data: </label>
+        			<input name="openFaceCSVFileInputBox" type="file" />
+                </div>
+                <div>
+                    <label>OpenPose CSV Data:</label>
+                    <input name="openPoseCSVFileInputBox" type="file" />
+                </div>
+                <br />
+            </div>
+            <input type="submit" value="Submit" />
 		</form>
       </div>
     );
