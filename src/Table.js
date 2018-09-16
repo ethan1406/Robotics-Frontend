@@ -41,7 +41,7 @@ class App extends Component {
               </tbody>
             </table>
             <h2 className="App-title"> Description </h2>
-            <p> Machine Learning Machine LearningMachine LearningMachine LearningMachine 
+            <p> Machine Learning Machine LearningMachine LearningMachine LearningMachine
             LearningMachine LearningMachine Learning LearningMachine LearningMachine Learning
             LearningMachine LearningMachine LearningLearningMachine LearningMachine Learning </p>
         </div>

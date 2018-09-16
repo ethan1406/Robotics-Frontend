@@ -9,38 +9,42 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Video Data Pipeline</h1>
         </header>
-        <form name="mainInputForm">
-            <div className="videoInputContainer">
-                <label for="videoFileInputBox">Video Data: </label>
-                <input name="videoFileInputBox" type="file" />
-            </div>
-            <br />
-            <div className="videoOptionsContainer">
-                Run:
-                <div className="openFaceCheckBoxContainer">
-                    <input name="OpenFaceCheckBox" type="checkbox" />
-                    <label for="OpenFaceCheckBox">OpenFace</label>
-                    <br />
-                </div>
-                <div className="openPoseCheckBoxContainer">
-                    <input name="OpenPoseCheckBox" type="checkbox" />
-                    <label for="OpenPoseCheckBox">OpenPose</label>
-                </div>
-            </div>
-            <br />
-            <div className="csvInputContainer">
-                <div>
-                    <label>OpenFace CSV Data: </label>
-        			<input name="openFaceCSVFileInputBox" type="file" />
-                </div>
-                <div>
-                    <label>OpenPose CSV Data:</label>
-                    <input name="openPoseCSVFileInputBox" type="file" />
+        <div className="formContainer">
+            <form name="mainVideoInputForm">
+                <div className="videoInputContainer">
+                    <label for="videoFileInputBox">Video Data: </label>
+                    <input name="videoFileInputBox" type="file" accept=".mp4,.avi,jpeg"/>
                 </div>
                 <br />
-            </div>
-            <input type="submit" value="Submit" />
-		</form>
+                <div className="videoOptionsContainer">
+                    <div className="openFaceCheckBoxContainer">
+                        <input name="OpenFaceCheckBox" type="checkbox" /> Run OpenFace
+                        <br />
+                    </div>
+                    <div className="openPoseCheckBoxContainer">
+                        <input name="OpenPoseCheckBox" type="checkbox" /> Run OpenPose
+                    </div>
+                    <br />
+                </div>
+                <input type="submit" value="Submit" />
+            </form>
+            <form name="mainCSVInputForm">
+                <br />
+                <div className="csvInputContainer">
+                    <div>
+                        <label>OpenFace CSV: </label>
+            			<input name="openFaceCSVFileInputBox" type="file" accept=".csv"/>
+                    </div>
+                    <br />
+                    <div>
+                        <label>OpenPose CSV: </label>
+                        <input name="openPoseCSVFileInputBox" type="file" accept=".csv"/>
+                    </div>
+                    <br />
+                </div>
+                <input type="submit" value="Submit" />
+    		</form>
+        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Table from './Table';
+import Loading from './Loading';
 import './index.css';
 
 
@@ -16,6 +17,10 @@ var url = getUrlVars();
 switch (url) {
   case 'table':
     ReactDOM.render(<Table />, document.getElementById('root'));
+    break;
+
+  case 'loading':
+    ReactDOM.render(<Loading />, document.getElementById('root'));
     break;
 
   case undefined:

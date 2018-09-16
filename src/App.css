@@ -22,16 +22,18 @@
     font-size: large;
 }
 
-form[name="mainInputForm"] {
+form[name="mainVideoInputForm"], form[name="mainCSVInputForm"] {
     display: block;
     padding-top: 40px;
-    width: 60%;
-    margin-left: 20%;
+    width: 33.33%;
+    margin-left: 33.33%;
     margin-right: auto;
     align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10pt;
 }
 
-.videoInputContainer, .videoOptionsContainer, .csvInputContainer {
+.formContainer, .videoInputContainer, .videoOptionsContainer, .csvInputContainer {
     align-items: center;
 }
 
@@ -40,3 +42,13 @@ label {
     font-size: 10pt;
     float: left;
 }
+
+.App-logo {
+  /* animation: App-logo-spin infinite 20s linear; */
+  height: 80px;
+}
+
+/* @keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} */
