@@ -1,2 +1,2 @@
-# Robotics-Frontend (CSCI401 project)
+# Robotics-Frontend
 Front end (UI) for the Robotics pipeline
