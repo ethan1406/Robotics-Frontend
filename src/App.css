@@ -43,12 +43,43 @@ label {
     float: left;
 }
 
-.App-logo {
-  /* animation: App-logo-spin infinite 20s linear; */
-  height: 80px;
+.loadingSymbol {
+  height: 100px;
 }
 
-/* @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-} */
+@keyframes blink {
+    0% {
+      opacity: .2;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: .2;
+    }
+}
+
+.loading {
+    text-align: center;
+    padding-top: 200px;
+}
+
+.loadingMessage {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18pt;
+}
+
+.loadingMessage span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.loadingMessage span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.loadingMessage span:nth-child(3) {
+    animation-delay: .4s;
+}

@@ -1,2 +1,2 @@
 # Robotics-Frontend
-front end for cs401 project
+Front end (UI) for the Robotics pipeline
