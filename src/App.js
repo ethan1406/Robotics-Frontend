@@ -52,12 +52,12 @@ class App extends Component {
     console.log(this.openPoseCheckBox.current.value);
     var url = 'http://127.0.0.1:8000/extractFeatures/';
     if(this.openFaceCheckBox.current.value) {
-        url = url + 'runOpenFace';
+        url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
     } else if(this.openPoseCheckBox.current.value) {
-        url = url + 'runOpenPose';
+        url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
     }
 
-    axios.get(url, {'filename': this.state.uploadVidFileName})
+    axios.get(url)
     .then(response=> {
       console.log(response);
     }).catch(err=> {
