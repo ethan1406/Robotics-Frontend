@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import Table from './Table';
 import Loading from './Loading';
+import OpenFaceOrPose from './OpenFaceOrPose';
 import './index.css';
 
 
@@ -23,6 +24,9 @@ switch (url) {
     ReactDOM.render(<Loading />, document.getElementById('root'));
     break;
 
+  case 'OpenFaceOrPose':
+    ReactDOM.render(<OpenFaceOrPose />, document.getElementById('root'));
+    break;
   case undefined:
   default:
     ReactDOM.render(<App />, document.getElementById('root'));
