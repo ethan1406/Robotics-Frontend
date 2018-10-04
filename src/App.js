@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './bootstrap/css/bootstrap.min.css';
 import Table from './Table';
+import Loading from './Loading';
 import axios from 'axios';
 import FileSaver from 'file-saver';
 import FormData from 'form-data';
@@ -18,7 +19,7 @@ class App extends Component {
     this.uploadVid = this.uploadVid.bind(this);
     this.runOpenFaceOrPose = this.runOpenFaceOrPose.bind(this);
 
-    this.state = {videoUplodaed : false, uploadVidFileName: '', tableHide : true, csvData: null};
+    this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false, tableHide : true, loadingHide : true, csvData: null};
   }
 
   uploadVid() {
@@ -37,9 +38,9 @@ class App extends Component {
         if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
             filename = filename.substring(1);
         }
-      }    
+      }
 
-      this.setState({uploadVidFileName: filename, videoUplodaed: true});
+      this.setState({uploadVidFileName: filename, videoUploaded: true});
 
     }).catch(err=>{
       console.log(err);
@@ -47,6 +48,7 @@ class App extends Component {
   }
 
    runOpenFaceOrPose() {
+    this.setState({loadingHide: false, formHide: true});
     var url = 'http://127.0.0.1:8000/extractFeatures/';
     if(this.openFaceCheckBox.current.value === 'on') {
         url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
@@ -56,11 +58,11 @@ class App extends Component {
 
     axios.get(url)
     .then(response=> {
-      
+
       var blob = new Blob([response.data], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, this.state.uploadVidFileName + '.csv');
 
-      this.setState({tableHide:false , csvData: response.data});    
+      this.setState({tableHide:false, loadingHide: true, videoUploaded: false, csvData: response.data});
 
     }).catch(err=> {
       console.log(err);
@@ -73,55 +75,58 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Video Data Pipeline</h1>
         </header>
-        {
-            (!this.state.videoUplodaed) ? (
-                <div className="formContainer">
-                    <form name="mainVideoInputForm">
-                        <div className="videoInputContainer">
-                            <label htmlFor="videoFileInputBox">Video Data: </label>
-                            <input name="videoFileInputBox" type="file" accept=".mp4,.avi,.jpeg,.mov" ref={this.videoInput}/>
-                        </div>
-                        <br />
-                        <input type="button" value="Submit" onClick={this.uploadVid}/>
-                    </form>
-                    <form name="mainCSVInputForm">
-                        <br />
-                        <div className="csvInputContainer">
-                            <div>
-                                <label>OpenFace CSV: </label>
-                                <input name="openFaceCSVFileInputBox" type="file" accept=".csv"/>
+        <div className="outerFormContainer" style={{display: this.state.formHide ? 'none' : 'block'}}>
+            {
+                (!this.state.videoUploaded) ? (
+                    <div className="formContainer">
+                        <form name="mainVideoInputForm">
+                            <div className="videoInputContainer">
+                                <label htmlFor="videoFileInputBox">Video Data: </label>
+                                <input name="videoFileInputBox" type="file" accept=".mp4,.avi,.jpeg,.mov" ref={this.videoInput}/>
                             </div>
                             <br />
-                            <div>
-                                <label>OpenPose CSV: </label>
-                                <input name="openPoseCSVFileInputBox" type="file" accept=".csv"/>
-                            </div>
+                            <input type="button" value="Submit" onClick={this.uploadVid}/>
+                        </form>
+                        <form name="mainCSVInputForm">
                             <br />
-                        </div>
-                        <input type="button" value="Submit"/>
-                    </form>
-                </div>
-            ): (
-               <div className="formContainer">
-                    <form name="mainVideoInputForm">
-                        <div className="videoOptionsContainer">
-                            <div className="openFaceCheckBoxContainer">
-                                <input name="OpenFaceCheckBox" type="checkbox" ref={this.openFaceCheckBox}/> Run OpenFace
+                            <div className="csvInputContainer">
+                                <div>
+                                    <label>OpenFace CSV: </label>
+                                    <input name="openFaceCSVFileInputBox" type="file" accept=".csv"/>
+                                </div>
+                                <br />
+                                <div>
+                                    <label>OpenPose CSV: </label>
+                                    <input name="openPoseCSVFileInputBox" type="file" accept=".csv"/>
+                                </div>
                                 <br />
                             </div>
-                            <div className="openPoseCheckBoxContainer">
-                                <input name="OpenPoseCheckBox" type="checkbox" ref={this.openPoseCheckBox}/> Run OpenPose
+                            <input type="button" value="Submit"/>
+                        </form>
+                    </div>
+                ): (
+                   <div className="formContainer">
+                        <form name="mainVideoInputForm">
+                            <div className="videoOptionsContainer">
+                                <div className="openFaceCheckBoxContainer">
+                                    <input name="OpenFaceCheckBox" type="checkbox" ref={this.openFaceCheckBox}/> Run OpenFace
+                                    <br />
+                                </div>
+                                <div className="openPoseCheckBoxContainer">
+                                    <input name="OpenPoseCheckBox" type="checkbox" ref={this.openPoseCheckBox}/> Run OpenPose
+                                </div>
+                                <br />
                             </div>
-                            <br />
-                        </div>
-                        <input type="button" value="Submit" onClick={this.runOpenFaceOrPose}/>
-                    </form>
-                </div>
-            )
-        }
+                            <input type="button" value="Submit" onClick={this.runOpenFaceOrPose}/>
+                        </form>
+                    </div>
+                )
+            }
+        </div>
         <Table hide={this.state.tableHide} data={this.state.csvData}/>
 
-        
+        <Loading hide={this.state.loadingHide}/>
+
       </div>
     );
   }

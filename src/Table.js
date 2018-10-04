@@ -11,12 +11,12 @@ class App extends Component {
     this.state = {data: null};
   }
 
-  
+
   // componentDidUpdate(prevProps) {
   //   console.log('here');
   //   if(this.props.data != null && this.props.data != undefined) {
   //     this.setState({data : this.CSVToArray(this.props.data)});
-  //   } 
+  //   }
 
   //   return null;
   // }
@@ -53,7 +53,7 @@ class App extends Component {
 
         // Keep looping over the regular expression matches
         // until we can no longer find a match.
-        while (arrMatches = objPattern.exec( strData )){
+        while (arrMatches === objPattern.exec( strData )){
 
             // Get the delimiter that was found.
             var strMatchedDelimiter = arrMatches[ 1 ];
@@ -104,7 +104,7 @@ class App extends Component {
         return( arrData );
     }
 
-  
+
 
   render() {
     return (
