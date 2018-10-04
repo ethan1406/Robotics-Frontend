@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import './bootstrap/css/bootstrap.min.css';
+import Table from './Table';
 import axios from 'axios';
+import FileSaver from 'file-saver';
 import FormData from 'form-data';
 
 
@@ -16,20 +18,17 @@ class App extends Component {
     this.uploadVid = this.uploadVid.bind(this);
     this.runOpenFaceOrPose = this.runOpenFaceOrPose.bind(this);
 
-    this.state = {videoUplodaed : false, uploadVidFileName: ''};
+    this.state = {videoUplodaed : false, uploadVidFileName: '', tableHide : true, csvData: null};
   }
 
   uploadVid() {
     var formData = new FormData();
     formData.append('myfile', this.videoInput.current.files[0]);
     formData.append('size', 'original');
-    // console.log(this.videoInput.current.value.files[0]);
-
 
     axios.post('http://127.0.0.1:8000/uploadVideo/videos/', formData, {headers: {
       'Content-Type': 'multipart/form-data'
     }}).then(response => {
-      console.log(response);
       var filename;
       var fullPath = this.videoInput.current.value;
       if (fullPath) {
@@ -41,7 +40,6 @@ class App extends Component {
       }    
 
       this.setState({uploadVidFileName: filename, videoUplodaed: true});
-      //window.location = 'http://127.0.0.1:3000/OpenFaceOrPose';
 
     }).catch(err=>{
       console.log(err);
@@ -49,9 +47,8 @@ class App extends Component {
   }
 
    runOpenFaceOrPose() {
-    console.log(this.openPoseCheckBox.current.value);
     var url = 'http://127.0.0.1:8000/extractFeatures/';
-    if(this.openFaceCheckBox.current.value) {
+    if(this.openFaceCheckBox.current.value === 'on') {
         url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
     } else if(this.openPoseCheckBox.current.value) {
         url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
@@ -59,7 +56,12 @@ class App extends Component {
 
     axios.get(url)
     .then(response=> {
-      console.log(response);
+      
+      var blob = new Blob([response.data], {type: 'text/csv;charset=utf-8'});
+      FileSaver.saveAs(blob, this.state.uploadVidFileName + '.csv');
+
+      this.setState({tableHide:false , csvData: response.data});    
+
     }).catch(err=> {
       console.log(err);
     });
@@ -116,8 +118,9 @@ class App extends Component {
                     </form>
                 </div>
             )
-
         }
+        <Table hide={this.state.tableHide} data={this.state.csvData}/>
+
         
       </div>
     );
