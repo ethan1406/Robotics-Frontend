@@ -53,7 +53,7 @@ class App extends Component {
 
         // Keep looping over the regular expression matches
         // until we can no longer find a match.
-        while (arrMatches === objPattern.exec( strData )){
+        while (arrMatches = objPattern.exec( strData )){
 
             // Get the delimiter that was found.
             var strMatchedDelimiter = arrMatches[ 1 ];
@@ -104,6 +104,10 @@ class App extends Component {
         return( arrData );
     }
 
+    visualizeData() {
+        console.log("Begin Visualization logic on back end");
+    }
+
 
 
   render() {
@@ -152,6 +156,7 @@ class App extends Component {
             <p> Machine Learning Machine LearningMachine LearningMachine LearningMachine
             LearningMachine LearningMachine Learning LearningMachine LearningMachine Learning
             LearningMachine LearningMachine LearningLearningMachine LearningMachine Learning </p>
+            <input type="button" value="Visualize" onClick={this.visualizeData}/>
         </div>
     );
   }

@@ -123,6 +123,7 @@ class App extends Component {
                 )
             }
         </div>
+        
         <Table hide={this.state.tableHide} data={this.state.csvData}/>
 
         <Loading hide={this.state.loadingHide}/>
