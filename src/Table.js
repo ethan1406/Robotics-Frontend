@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import './bootstrap/css/bootstrap.min.css';
+import axios from 'axios';
 
 
 class App extends Component {
@@ -106,6 +107,20 @@ class App extends Component {
 
     visualizeData() {
         console.log("Begin Visualization logic on back end");
+        var url = 'http://127.0.0.1:8000/visualizeData/runVisualization';
+        // if(this.openFaceCheckBox.current.value === 'on') {
+        //     url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
+        // } else if(this.openPoseCheckBox.current.value) {
+        //     url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
+        // }
+
+        axios.get(url)
+        .then(response=> {
+            console.log(response.data);
+
+        }).catch(err=> {
+          console.log(err);
+        });
     }
 
 
