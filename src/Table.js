@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './bootstrap/css/bootstrap.min.css';
 import axios from 'axios';
+import Plot from 'react-plotly.js';
 
 
 class App extends Component {
@@ -108,16 +109,32 @@ class App extends Component {
     visualizeData() {
         console.log("Begin Visualization logic on back end");
         var url = 'http://127.0.0.1:8000/visualizeData/runVisualization';
-        // if(this.openFaceCheckBox.current.value === 'on') {
-        //     url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
-        // } else if(this.openPoseCheckBox.current.value) {
-        //     url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
-        // }
 
         axios.get(url)
         .then(response=> {
             console.log(response.data);
 
+            var xValues = [];
+            var yValues = [];
+
+            for (let i = 0; i < response.data.length; i++) {
+                xValues.push(response.data[i][0]);
+                yValues.push(response.data[i][1]);
+            }
+
+            var trace1 = {
+                x: xValues,
+                y: yValues,
+                mode: 'markers',
+                type: 'scatter',
+                marker: {color: 'red'}
+            };
+
+            var dataPlot = [trace1];
+
+            // Plotly.newPlot('plotContainer', dataPlot);
+
+            this.setState({plotHide : false, plotData : dataPlot});
         }).catch(err=> {
           console.log(err);
         });
@@ -127,7 +144,6 @@ class App extends Component {
 
   render() {
     return (
-
         <div className="col-sm-8 col-sm-offset-2" style={{display: this.props.hide ? 'none' : 'block', marginTop: '7em'}}>
             <table className="table">
               <thead>
@@ -172,6 +188,14 @@ class App extends Component {
             LearningMachine LearningMachine Learning LearningMachine LearningMachine Learning
             LearningMachine LearningMachine LearningLearningMachine LearningMachine Learning </p>
             <input type="button" value="Visualize" onClick={this.visualizeData}/>
+
+            <div className="plotContainer" style={{display: this.state.plotHide ? 'none' : 'block'}}>
+                {
+                    (!this.state.plotHide) ? (
+                        <Plot data={this.state.plotData} layout={{width: 600, height: 400, title: 'A Visualization'} } />
+                    ): (<div></div>)
+                }
+            </div>
         </div>
     );
   }
