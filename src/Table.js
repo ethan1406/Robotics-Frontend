@@ -108,21 +108,18 @@ class App extends Component {
     }
 
     visualizeData() {
-        console.log("Begin Visualization logic on back end");
         var url = 'http://127.0.0.1:8000/visualizeData/runVisualization';
 
         axios.get(url)
         .then(response=> {
             var xValues = [];
             var yValues = [];
+            response.data.data = JSON.parse(response.data.data);
 
-            console.log("Data.length: " + response.data.data.length);
             for (let i = 0; i < response.data.data.length; i++) {
                 xValues.push(response.data.data[i][0]);
                 yValues.push(response.data.data[i][1]);
             }
-
-            console.log(xValues);
 
             var trace1 = {
                 x: xValues,
@@ -133,12 +130,8 @@ class App extends Component {
             };
 
             var dataPlot = [trace1];
-            console.log(xValues);
-
-            // Plotly.newPlot('plotContainer', dataPlot);
 
             this.setState({data: null, plotData : dataPlot, plotHide : false});
-            console.log(this.state.plotHide);
         }).catch(err=> {
           console.log(err);
         });
