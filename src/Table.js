@@ -108,7 +108,7 @@ class App extends Component {
     }
 
     visualizeData() {
-        var url = 'http://127.0.0.1:8000/visualizeData/runVisualization';
+        var url = 'http://127.0.0.1:8000/visualizeData/runVisualization?fileName=' + this.props.fileName;
 
         axios.get(url)
         .then(response=> {
