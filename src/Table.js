@@ -10,7 +10,8 @@ class App extends Component {
   constructor(props)
   {
     super(props);
-    this.state = {data: null};
+    this.state = {data: null, plotHide: true};
+    this.visualizeData = this.visualizeData.bind(this)
   }
 
 
@@ -112,29 +113,32 @@ class App extends Component {
 
         axios.get(url)
         .then(response=> {
-            console.log(response.data);
-
             var xValues = [];
             var yValues = [];
 
-            for (let i = 0; i < response.data.length; i++) {
-                xValues.push(response.data[i][0]);
-                yValues.push(response.data[i][1]);
+            console.log("Data.length: " + response.data.data.length);
+            for (let i = 0; i < response.data.data.length; i++) {
+                xValues.push(response.data.data[i][0]);
+                yValues.push(response.data.data[i][1]);
             }
+
+            console.log(xValues);
 
             var trace1 = {
                 x: xValues,
                 y: yValues,
                 mode: 'markers',
                 type: 'scatter',
-                marker: {color: 'red'}
+                marker: {color: 'red'},
             };
 
             var dataPlot = [trace1];
+            console.log(xValues);
 
             // Plotly.newPlot('plotContainer', dataPlot);
 
-            this.setState({plotHide : false, plotData : dataPlot});
+            this.setState({data: null, plotData : dataPlot, plotHide : false});
+            console.log(this.state.plotHide);
         }).catch(err=> {
           console.log(err);
         });
@@ -192,7 +196,7 @@ class App extends Component {
             <div className="plotContainer" style={{display: this.state.plotHide ? 'none' : 'block'}}>
                 {
                     (!this.state.plotHide) ? (
-                        <Plot data={this.state.plotData} layout={{width: 600, height: 400, title: 'A Visualization'} } />
+                        <Plot data={this.state.plotData} layout={{width: 600, height: 400, title: 'Data Visualization'} } />
                     ): (<div></div>)
                 }
             </div>
