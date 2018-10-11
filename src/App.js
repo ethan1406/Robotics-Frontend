@@ -50,9 +50,9 @@ class App extends Component {
    runOpenFaceOrPose() {
     this.setState({loadingHide: false, formHide: true});
     var url = 'http://127.0.0.1:8000/extractFeatures/';
-    if(this.openFaceCheckBox.current.value === 'on') {
+    if(this.openFaceCheckBox.current.value.checked) {
         url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
-    } else if(this.openPoseCheckBox.current.value) {
+    } else if(this.openPoseCheckBox.current.value.checked) {
         url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
     }
 
