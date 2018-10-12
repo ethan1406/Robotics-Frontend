@@ -19,7 +19,7 @@ class App extends Component {
     this.uploadVid = this.uploadVid.bind(this);
     this.runOpenFaceOrPose = this.runOpenFaceOrPose.bind(this);
 
-    this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false, 
+    this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false,
         tableHide : true, loadingHide : true, csvData: null, checkBox: -1};
   }
 
@@ -60,14 +60,28 @@ class App extends Component {
         url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
     }
 
+    let currentComponent = this;
+
     axios.get(url)
     .then(response=> {
 
       var blob = new Blob([response.data], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, this.state.uploadVidFileName + '.csv');
 
-      this.setState({tableHide:false, loadingHide: true, videoUploaded: false, csvData: response.data, checkBox: checkBoxVal});
+      var _fileData = response.data;
 
+      console.log(this.state.uploadVidFileName);
+
+      axios.get('http://127.0.0.1:8000/extractFeatures/describeData?filename=' + this.state.uploadVidFileName)
+      .then(function (response) {
+          console.log(response.data.pandaDescription);
+          console.log(_fileData);
+
+          currentComponent.setState({tableHide:false, loadingHide: true, videoUploaded: false, pandaDescription: response.data.pandaDescription, csvData: _fileData, checkBox: checkBoxVal});
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
     }).catch(err=> {
       console.log(err);
     });
@@ -129,7 +143,7 @@ class App extends Component {
             }
         </div>
 
-        <Table hide={this.state.tableHide} data={this.state.csvData} fileName = {this.state.uploadVidFileName} checkBox = {this.state.checkBox}/>
+        <Table hide={this.state.tableHide} data={this.state.csvData} pandaDescription={this.state.pandaDescription} fileName = {this.state.uploadVidFileName} checkBox = {this.state.checkBox}/>
 
         <Loading hide={this.state.loadingHide}/>
 

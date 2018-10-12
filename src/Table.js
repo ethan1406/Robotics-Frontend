@@ -178,9 +178,7 @@ class App extends Component {
                 {this.createTable()}
             </table>
             <h2 className="App-title"> Description (from Panda)</h2>
-            <p> Machine Learning Machine LearningMachine LearningMachine LearningMachine
-            LearningMachine LearningMachine Learning LearningMachine LearningMachine Learning
-            LearningMachine LearningMachine LearningLearningMachine LearningMachine Learning </p>
+            <p> {this.props.pandaDescription} </p>
             <input type="button" value="Visualize" onClick={this.visualizeData}/>
 
             <div className="plotContainer" style={{display: this.state.plotHide ? 'none' : 'block'}}>
