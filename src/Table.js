@@ -109,9 +109,10 @@ class App extends Component {
 
     visualizeData() {
         var url = 'http://127.0.0.1:8000/visualizeData/';
-        if(this.props.checkBox == 0) {
+        console.log(this.props.checkBox);
+        if(this.props.checkBox === 0) {
           url = url + 'runVisualizationOpenFace?fileName=' + this.props.fileName;
-        } else if (this.props.checkBox == 1) {
+        } else if (this.props.checkBox === 1) {
           url = url + 'runVisualizationOpenPose?fileName=' + this.props.fileName;
         }
         
@@ -156,7 +157,7 @@ class App extends Component {
       table.push(<thead>{headRow}</thead>);
       
       let childrenRow = [];
-      for(let i = 1; i < 11; i++) {
+      for(let i = 1; i < 6; i++) {
         let children = [];
         children.push(<th scope="row">{i}</th>);
         for(let j = 1; j < 7; j++) {

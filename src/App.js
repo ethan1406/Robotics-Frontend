@@ -51,11 +51,12 @@ class App extends Component {
    runOpenFaceOrPose() {
     this.setState({loadingHide: false, formHide: true});
     var url = 'http://127.0.0.1:8000/extractFeatures/';
+    var checkBoxVal = -1;
     if(this.openFaceCheckBox.current.checked) {
-        this.setState({checkBox : 0});
+        checkBoxVal = 0;
         url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
     } else if(this.openPoseCheckBox.current.checked) {
-        this.setState({checkBox : 1});
+        checkBoxVal = 1;
         url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
     }
 
@@ -65,7 +66,7 @@ class App extends Component {
       var blob = new Blob([response.data], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, this.state.uploadVidFileName + '.csv');
 
-      this.setState({tableHide:false, loadingHide: true, videoUploaded: false, csvData: response.data});
+      this.setState({tableHide:false, loadingHide: true, videoUploaded: false, csvData: response.data, checkBox: checkBoxVal});
 
     }).catch(err=> {
       console.log(err);
@@ -128,7 +129,7 @@ class App extends Component {
             }
         </div>
 
-        <Table hide={this.state.tableHide} data={this.state.csvData} fileName = {this.state.uploadVidFileName} checkBox = {this.state.checkbox}/>
+        <Table hide={this.state.tableHide} data={this.state.csvData} fileName = {this.state.uploadVidFileName} checkBox = {this.state.checkBox}/>
 
         <Loading hide={this.state.loadingHide}/>
 
