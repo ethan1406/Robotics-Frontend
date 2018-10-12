@@ -108,7 +108,13 @@ class App extends Component {
     }
 
     visualizeData() {
-        var url = 'http://127.0.0.1:8000/visualizeData/runVisualization?fileName=' + this.props.fileName;
+        var url = 'http://127.0.0.1:8000/visualizeData/';
+        if(this.props.checkBox == 0) {
+          url = url + 'runVisualizationOpenFace?fileName=' + this.props.fileName;
+        } else if (this.props.checkBox == 1) {
+          url = url + 'runVisualizationOpenPose?fileName=' + this.props.fileName;
+        }
+        
 
         axios.get(url)
         .then(response=> {
@@ -138,47 +144,37 @@ class App extends Component {
     }
 
 
+    createTable = () => {
+      let table = [];
+
+      let heads = [];
+      heads.push(<th scope="col">#</th>);
+      for(var i = 1 ; i < 7; i ++) {
+        heads.push(<th key= {i} scope="col">{(this.props.data) ? this.CSVToArray(this.props.data)[0][i] : ''}</th>);
+      }
+      let headRow = <tr>{heads}</tr>;
+      table.push(<thead>{headRow}</thead>);
+      
+      let childrenRow = [];
+      for(let i = 1; i < 11; i++) {
+        let children = [];
+        children.push(<th scope="row">{i}</th>);
+        for(let j = 1; j < 7; j++) {
+          children.push(<td key = {i*6 + j}>{(this.props.data) ? this.CSVToArray(this.props.data)[i][j] : ''}</td>);
+        }
+        childrenRow.push(<tr>{children}</tr>);
+
+      }
+      table.push(<tbody>{childrenRow}</tbody>);
+
+      return table;
+    }
 
   render() {
     return (
         <div className="col-sm-8 col-sm-offset-2" style={{display: this.props.hide ? 'none' : 'block', marginTop: '7em'}}>
             <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">face_id</th>
-                  <th scope="col">timestamp</th>
-                  <th scope="col">confidence</th>
-                  <th scope="col">success</th>
-                  <th scope="col">gaze_0_x</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[1][1] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[1][2] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[1][3] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[1][4] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[1][5] : ''}</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[2][1] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[2][2] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[2][3] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[2][4] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[2][5] : ''}</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[3][1] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[3][2] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[3][3] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[3][4] : ''}</td>
-                  <td>{(this.props.data) ? this.CSVToArray(this.props.data)[3][5] : ''}</td>
-                </tr>
-              </tbody>
+                {this.createTable()}
             </table>
             <h2 className="App-title"> Description (from Panda)</h2>
             <p> Machine Learning Machine LearningMachine LearningMachine LearningMachine

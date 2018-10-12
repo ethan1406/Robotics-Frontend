@@ -19,7 +19,8 @@ class App extends Component {
     this.uploadVid = this.uploadVid.bind(this);
     this.runOpenFaceOrPose = this.runOpenFaceOrPose.bind(this);
 
-    this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false, tableHide : true, loadingHide : true, csvData: null};
+    this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false, 
+        tableHide : true, loadingHide : true, csvData: null, checkBox: -1};
   }
 
   uploadVid() {
@@ -51,8 +52,10 @@ class App extends Component {
     this.setState({loadingHide: false, formHide: true});
     var url = 'http://127.0.0.1:8000/extractFeatures/';
     if(this.openFaceCheckBox.current.checked) {
+        this.setState({checkBox : 0});
         url = url + 'runOpenFace?filename=' + this.state.uploadVidFileName;
     } else if(this.openPoseCheckBox.current.checked) {
+        this.setState({checkBox : 1});
         url = url + 'runOpenPose?filename=' + this.state.uploadVidFileName;
     }
 
@@ -125,7 +128,7 @@ class App extends Component {
             }
         </div>
 
-        <Table hide={this.state.tableHide} data={this.state.csvData} fileName = {this.state.uploadVidFileName}/>
+        <Table hide={this.state.tableHide} data={this.state.csvData} fileName = {this.state.uploadVidFileName} checkBox = {this.state.checkbox}/>
 
         <Loading hide={this.state.loadingHide}/>
 
