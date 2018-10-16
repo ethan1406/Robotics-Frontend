@@ -13,10 +13,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.videoInput = React.createRef();
+    this.csvOpenFaceInput = React.createRef();
     this.openPoseCheckBox = React.createRef();
     this.openFaceCheckBox = React.createRef();
 
     this.uploadVid = this.uploadVid.bind(this);
+    this.uploadCSV = this.uploadCSV.bind(this);
     this.runOpenFaceOrPose = this.runOpenFaceOrPose.bind(this);
 
     this.state = {videoUploaded : false, uploadVidFileName: '', formHide : false,
@@ -46,6 +48,35 @@ class App extends Component {
     }).catch(err=>{
       console.log(err);
     });
+  }
+
+  uploadCSV() {
+    this.setState({loadingHide: false, formHide: true});
+
+    var formData = new FormData();
+
+    let url = 'http://127.0.0.1:8000/uploadVideo/';
+
+    formData.append('myCSV', this.csvOpenFaceInput.current.files[0]);
+
+    if(this.csvOpenFaceInput.current.files.length != 0) {
+      url = url + 'uploadOpenFaceCSV/';
+    } else {
+      url = url + 'uploadOpenPoseCSV/';
+    }
+
+
+    axios.post(url, formData, {headers: {
+      'Content-Type': 'multipart/form-data'
+    }}).then(response => {
+      console.log(response);
+
+      this.setState({loadingHide: true, formHide: true, tableHide: false, csvData: this.csvOpenFaceInput.current.files[0]});
+
+    }).catch(err=> {
+      console.log(err);
+    }); 
+
   }
 
    runOpenFaceOrPose() {
@@ -111,7 +142,7 @@ class App extends Component {
                             <div className="csvInputContainer">
                                 <div>
                                     <label>OpenFace CSV: </label>
-                                    <input name="openFaceCSVFileInputBox" type="file" accept=".csv"/>
+                                    <input name="openFaceCSVFileInputBox" type="file" accept=".csv" ref={this.csvOpenFaceInput}/>
                                 </div>
                                 <br />
                                 <div>
@@ -120,7 +151,7 @@ class App extends Component {
                                 </div>
                                 <br />
                             </div>
-                            <input type="button" value="Submit"/>
+                            <input type="button" value="Submit" onClick={this.uploadCSV} />
                         </form>
                     </div>
                 ): (
