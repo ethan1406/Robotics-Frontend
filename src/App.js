@@ -51,27 +51,47 @@ class App extends Component {
   }
 
   uploadCSV() {
+    let openFaceCsv = true;
+    var checkBoxVal = -1;
+    if(this.csvOpenFaceInput.current.files.length == 0) {
+      checkBoxVal = 0;
+      openFaceCsv = false;
+    } else {
+      checkBoxVal = 1;
+    }
+
     this.setState({loadingHide: false, formHide: true});
 
     var formData = new FormData();
-
-    let url = 'http://127.0.0.1:8000/uploadVideo/';
-
     formData.append('myCSV', this.csvOpenFaceInput.current.files[0]);
 
-    if(this.csvOpenFaceInput.current.files.length != 0) {
-      url = url + 'uploadOpenFaceCSV/';
-    } else {
-      url = url + 'uploadOpenPoseCSV/';
-    }
+    let url = 'http://127.0.0.1:8000/uploadVideo/';
+    let appendUrl = openFaceCsv ? 'uploadOpenFaceCSV/' : 'uploadOpenPoseCSV/';
+    url += appendUrl;
 
+    var fr = new FileReader();
+      var content;
+    fr.onload = function(e){
+        content = e.target.result;
+    };
+    fr.readAsText(this.csvOpenFaceInput.current.files[0]);
 
     axios.post(url, formData, {headers: {
       'Content-Type': 'multipart/form-data'
     }}).then(response => {
-      console.log(response);
 
-      this.setState({loadingHide: true, formHide: true, tableHide: false, csvData: this.csvOpenFaceInput.current.files[0]});
+      var filename;
+      var fullPath = openFaceCsv ? this.csvOpenFaceInput.current.value : this.csvOpenPoseInput.current.value;;
+      if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+      }
+
+      this.setState({loadingHide: true, formHide: true, tableHide: false, 
+          uploadVidFileName: filename, csvData: content, checkBox: checkBoxVal});
 
     }).catch(err=> {
       console.log(err);
