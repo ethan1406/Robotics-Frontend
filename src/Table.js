@@ -115,7 +115,7 @@ class App extends Component {
         } else if (this.props.checkBox === 1) {
           url = url + 'runVisualizationOpenPose?fileName=' + this.props.fileName;
         }
-        
+
 
         axios.get(url)
         .then(response=> {
@@ -150,18 +150,36 @@ class App extends Component {
 
       let heads = [];
       heads.push(<th scope="col">#</th>);
-      for(var i = 1 ; i < 7; i ++) {
-        heads.push(<th key= {i} scope="col">{(this.props.data) ? this.CSVToArray(this.props.data)[0][i] : ''}</th>);
+      for(var i = 1 ; i < 8; i ++) {
+          if (i == 7) heads.push(<th key={i} scope="col">...</th>);
+          else
+            heads.push(<th key= {i} scope="col">{(this.props.data) ? this.CSVToArray(this.props.data)[0][i] : ''}</th>);
       }
       let headRow = <tr>{heads}</tr>;
       table.push(<thead>{headRow}</thead>);
-      
+
       let childrenRow = [];
-      for(let i = 1; i < 6; i++) {
+      for(let i = 1; i < 7; i++) {
         let children = [];
-        children.push(<th scope="row">{i}</th>);
-        for(let j = 1; j < 7; j++) {
-          children.push(<td key = {i*6 + j}>{(this.props.data) ? this.CSVToArray(this.props.data)[i][j] : ''}</td>);
+        if (i == 6)
+            children.push(<th scope="row">...</th>);
+        else
+            children.push(<th scope="row">{i}</th>);
+        if (i == 6){
+            children.push(<td key={37}>...</td>);
+            children.push(<td key={38}>...</td>);
+            children.push(<td key ={39}>...</td>);
+            children.push(<td key ={40}>...</td>);
+            children.push(<td key ={41}>...</td>);
+            children.push(<td key ={42}>...</td>);
+            children.push(<td key = {43}>...</td>);
+        }
+        else {
+            for(let j = 1; j < 8; j++) {
+                if (j == 7) children.push(<td key = {i*6 + j}>...</td>);
+                else
+                    children.push(<td key = {i*6 + j}>{(this.props.data) ? this.CSVToArray(this.props.data)[i][j] : ''}</td>);
+            }
         }
         childrenRow.push(<tr>{children}</tr>);
 
@@ -171,17 +189,39 @@ class App extends Component {
       return table;
     }
 
+    createDescTable = () => {
+        let table = [];
+
+        console.log("DESC: " + this.props.pandaDescription);
+
+        if (this.props.pandaDescription != null) {
+            var descObj = JSON.parse(this.props.pandaDescription);
+            Object.entries(descObj).forEach(
+                ([key, value]) => {
+                    table.push(<tr><td>{key}</td><td>{value}</td></tr>);
+                }
+            );
+
+            return table;
+        }
+        else {
+            console.log("Waiting for description data");
+        }
+    }
+
   render() {
     return (
         <div className="col-sm-8 col-sm-offset-2" style={{display: this.props.hide ? 'none' : 'block', marginTop: '7em'}}>
             <table className="table">
                 {this.createTable()}
             </table>
-            <h2 className="App-title"> Description (from Panda)</h2>
-            <p> {this.props.pandaDescription} </p>
+            <h2 className="App-title"> Panda Statistical Description </h2>
+            <table className="table">
+                {this.createDescTable()}
+            </table>
             <input type="button" value="Visualize" onClick={this.visualizeData}/>
 
-            <div className="plotContainer" style={{display: this.state.plotHide ? 'none' : 'block'}}>
+            <div className="plotContainer" style={{display: 'block'}}>
                 {
                     (!this.state.plotHide) ? (
                         <Plot data={this.state.plotData} layout={{width: 600, height: 400, title: 'Data Visualization'} } />
